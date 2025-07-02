@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Elif Testi - REO Versiyonu</title>
+  <style>
+    body {
+      background: #CEC6BB;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      padding: 50px 20px;
+      overflow: hidden;
+    }
+
+    #artboard {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+      height: 360px;
+    }
+
+    .cell {
+      position: relative;
+      width: 100px;
+      height: 160px;
+    }
+
+    .cell div { position: absolute; }
+
+    /* Kulak dışı ve içi */
+    .ear-left, .ear-right, .ear-inner-left, .ear-inner-right {
+      z-index: 2;
+      width: 0;
+      height: 0;
+      border-style: solid;
+    }
+    .ear-left {
+      top: 2px; left: 5px;
+      border-width: 40px 0 0 30px;
+      border-color: transparent transparent transparent #A0A0A0;
+      transform: rotate(-20deg);
+    }
+    .ear-right {
+      top: 2px; right: 5px;
+      border-width: 40px 30px 0 0;
+      border-color: transparent #A0A0A0 transparent transparent;
+      transform: rotate(20deg);
+    }
+    .ear-inner-left {
+      top: 12px; left: 10px;
+      border-width: 25px 0 0 20px;
+      border-color: transparent transparent transparent #F2C1B1;
+      transform: rotate(-20deg);
+    }
+    .ear-inner-right {
+      top: 12px; right: 10px;
+      border-width: 25px 20px 0 0;
+      border-color: transparent #F2C1B1 transparent transparent;
+      transform: rotate(20deg);
+    }
+
+    /* Gövde & kafa */
+    .body {
+      top: 30px;
+      width: 100%; height: 130px;
+      background: #A0A0A0;
+      border-top-left-radius: 50px;
+      border-top-right-radius: 50px;
+      z-index: 1;
+    }
+    .neck {
+      top: 95px;
+      width: 100%; height: 10px;
+      background: #BAAB89;
+      z-index: 1;
+    }
+    .bell {
+      top: 105px; left: 43px;
+      width: 14px; height: 14px;
+      background: #853650;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    /* Yüz detayları */
+    .nose {
+      top: 70px; left: 45px;
+      width: 10px; height: 8px;
+      background: #F7CAC9;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .mouth {
+      top: 85px; left: 42px;
+      width: 16px; height: 2px;
+      background: #F7CAC9;
+      border-radius: 1px;
+      z-index: 1;
+    }
+    .mouth.happy { border-radius: 0 0 50% 50%; height: 8px; }
+    .mouth.sad { border-radius: 50% 50% 0 0; height: 8px; top: 82px; }
+    .mouth.surprised {
+      top: 80px; left: 45px;
+      width: 10px; height: 10px;
+      background: #F7CAC9;
+      border-radius: 50%;
+    }
+
+    /* Gözler & bıyıklar */
+    .eye {
+      top: 50px;
+      width: 26px; height: 26px;
+      background: #E0A800;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .eye-left { left: 12px; }
+    .eye-right { right: 12px; }
+    .eyeball {
+      top: 54px;
+      width: 16px; height: 16px;
+      background: #000;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .eyeball-left { left: 18px; }
+    .eyeball-right { right: 18px; }
+    .whisker {
+      width: 28px; height: 1px;
+      background: #200007;
+      border-radius: 1px;
+      z-index: 1;
+    }
+    .whisker-left-1 { top: 70px; left: 0; }
+    .whisker-left-2 { width: 24px; top: 75px; left: 0; transform: rotate(-11deg); }
+    .whisker-left-3 { top: 80px; left: 0; transform: rotate(-25deg); }
+    .whisker-right-1 { top: 70px; right: 0; }
+    .whisker-right-2 { width: 24px; top: 75px; right: 0; transform: rotate(11deg); }
+    .whisker-right-3 { top: 80px; right: 0; transform: rotate(25deg); }
+
+    /* Ön patiler & parmaklar */
+    .paw {
+      bottom: -6px;
+      width: 22px; height: 30px;
+      background: #A0A0A0;
+      border-radius: 50%/70%;
+      box-shadow: inset -2px -2px 0 rgba(0,0,0,0.2);
+      z-index: 1;
+    }
+    .paw-left { left: 12px; }
+    .paw-right { right: 12px; }
+    .paw .toe {
+      top: 4px;
+      width: 6px; height: 6px;
+      background: #A0A0A0;
+      border-radius: 50%;
+    }
+    .paw-left .toe1 { left: 3px; }
+    .paw-left .toe2 { left: 8px; }
+    .paw-left .toe3 { left: 13px; }
+    .paw-right .toe1 { left: 3px; }
+    .paw-right .toe2 { left: 8px; }
+    .paw-right .toe3 { left: 13px; }
+
+    /* Mesaj balonu */
+    #message {
+      top: 10px; left: 120px;
+      background: #FFF;
+      border: 2px solid #555;
+      border-radius: 20px;
+      padding: 10px 15px;
+      font-size: 0.9em;
+      width: 240px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      z-index: 1;
+      transition: transform 1s;
+    }
+    #message::after {
+      top: 20px; left: -10px;
+      content: '';
+      position: absolute;
+      border: 10px solid transparent;
+      border-right-color: #FFF;
+    }
+
+    /* Animasyon ve gizleme */
+    .slide-up { animation: slideUp 1s forwards; }
+    @keyframes slideUp { from { transform: translateY(0);} to { transform: translateY(-30px);} }
+    .hidden { display: none; }
+
+    /* Buton stili */
+    .btn {
+      padding: 10px 20px;
+      font-size: 1.1em;
+      background-color: #7ec4cf;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    /* Çiçek animasyonu */
+    @keyframes growFade {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(10); opacity: 0; }
+    }
+    .flower-animate {
+      animation: growFade 1s forwards;
+      transform-origin: center center;
+    }
+    #inputSection input {
+      padding: 10px; font-size: 1.2em;
+      border-radius: 10px; border: 1px solid #ccc;
+    }
+    
+  </style>
+</head>
+
+<body onmousemove="getCoords(event)">
+  <div id="artboard">
+    <div class="cell">
+      <div class="ear-left"></div>
+      <div class="ear-right"></div>
+      <div class="ear-inner-left"></div>
+      <div class="ear-inner-right"></div>
+      <div class="body"></div>
+      <div class="neck"></div>
+      <div class="bell"></div>
+      <div class="nose"></div>
+      <div class="whisker whisker-left-1"></div>
+      <div class="whisker whisker-left-2"></div>
+      <div class="whisker whisker-left-3"></div>
+      <div class="whisker whisker-right-1"></div>
+      <div class="whisker whisker-right-2"></div>
+      <div class="whisker whisker-right-3"></div>
+      <div class="eye eye-left"></div>
+      <div class="eye eye-right"></div>
+      <div class="eyeball eyeball-left"></div>
+      <div class="eyeball eyeball-right"></div>
+      <div class="mouth" id="catMouth"></div>
+      <div class="paw paw-left"><div class="toe toe1"></div><div class="toe toe2"></div><div class="toe toe3"></div></div>
+      <div class="paw paw-right"><div class="toe toe1"></div><div class="toe toe2"></div><div class="toe toe3"></div></div>
+      <div id="message"></div>
+    </div>
+  </div>
+  <button id="continueBtn" class="btn hidden">Devam Et</button>
+  <div id="controls" class="hidden">
+    <div id="inputSection" class="hidden">
+      <div id="inputPrompt">Lütfen ismini bu kutucuğa yazar mısın 🙏</div>
+      <input type="text" id="nameInput" placeholder="İsmin?">
+      <button id="sendName" class="btn">Gönder</button>
+    </div>
+    <div id="choiceButtons" class="hidden">
+      <button id="readyBtn" class="btn">Hazırım</button>
+      <button id="thinkBtn" class="btn">Hmm bir düşüneyim</button>
+    </div>
+    <div id="questionBox" class="hidden"></div>
+    <div id="flowerBox" class="hidden"></div>
+    <div id="letterBox" class="hidden"></div>
+  </div>
+  <script>
+    function getCoords(e) {
+      const eyes = document.getElementsByClassName('eye');
+      const eyeballs = document.getElementsByClassName('eyeball');
+      const x = e.clientX, y = e.clientY;
+      for (let i = 0; i < eyes.length; i++) {
+        const r = eyes[i].getBoundingClientRect();
+        let dx = (x - r.left - r.width/2) / 10;
+        let dy = (y - r.top - r.width/2) / 10;
+        const m = 5;
+        dx = Math.max(-m, Math.min(dx, m));
+        dy = Math.max(-m, Math.min(dy, m));
+        eyeballs[i].style.transform = `translate(${dx}px, ${dy}px)`;
+      }
+    }
+
+    function setExpression(type) {
+      const m = document.getElementById('catMouth'); m.className = 'mouth';
+      if (type === 'happy') m.classList.add('happy');
+      else if (type === 'sad') m.classList.add('sad');
+      else if (type === 'surprised') m.classList.add('surprised');
+    }
+
+    window.onload = showInitial;
+
+    function showInitial() {
+      const msg = document.getElementById('message');
+      setExpression('surprised');
+      msg.innerHTML = `Merhabalarr, Benim adım <strong>REO</strong>.<br>
+      Evett eğer Nurlanın anlattığı kişiysen bu isim sana bayaa tanıdık geliyordur.<br>
+      Nurlan beni REOdan esinlenerek yaratmaya çalıştı (Ki bence yapamadı).<br>
+      Bana seninle yaşadıklarını anlattı da anlattı,<br>
+      sabahtan akşama seni dinledim.<br>
+      Şimdide seni daha yakından tanımam için beni gönderdim.<br>
+      Valla bende merak ettim seni bayaa.<br>
+      Şimdi senin hakikaten Nurlanın anlattığı kişi olup olmadığını anlamam lazım.`;
+      const btn = document.getElementById('continueBtn'); btn.classList.remove('hidden');
+      btn.onclick = () => { btn.classList.add('hidden'); transitionToNameInput(); };
+    }
+
+    function transitionToNameInput() {
+      const msg = document.getElementById('message'); msg.classList.add('slide-up');
+      msg.innerHTML = `Dünyanın <strong>eeen cesur ve güzel</strong> kızı testine hoşgeldin!`;
+      document.getElementById('controls').classList.remove('hidden');
+      document.getElementById('inputSection').classList.remove('hidden');
+      document.getElementById('sendName').onclick = checkName;
+    }
+
+    function checkName() {
+      const name = document.getElementById('nameInput').value.trim().toLowerCase();
+      const msg = document.getElementById('message');
+      if (name === 'elif') {
+        setExpression('happy'); msg.innerHTML = `YUPPİİİ! Evettt, tahmin ettiğim gibi o sensin!! 🎉 Hoşgeldiiin Eliiif!`;
+        setTimeout(() => {
+          msg.innerHTML += `<br><br>Amaaaa… benim düşündüğüm Elif olduğundan emin olmam için seni test etmem gerekiyor 😌 Sana küçük bir test hazırladım ne zaman hazır olursan Hazırım butonuna tıklaman yeterli`;
+          document.getElementById('inputSection').classList.add('hidden');
+          document.getElementById('choiceButtons').classList.remove('hidden');
+          document.getElementById('thinkBtn').onclick = onThink;
+          document.getElementById('readyBtn').onclick = onReady;
+        }, 2000);
+      } else {
+        setExpression('sad'); msg.innerHTML = `Bi saniye... Defterime bakıyoorum... hmm... maalesef bu isim defterimizde <strong>YOKK</strong> 😢`;
+      }
+    }
+
+    function onThink() {
+      setExpression('surprised');
+      document.getElementById('message').innerHTML = `Yaaaa Hadi ama bu anı sabırsızlıkla bekliyordum. Şıklar senin kafanı karıştırıyor bence, hemen senin için sadeleştireyim.`;
+      document.getElementById('thinkBtn').classList.add('hidden');
+    }
+
+    let readyCount = 0;
+    function onReady() {
+      const msg = document.getElementById('message'); readyCount++;
+      if (readyCount === 1) {
+        msg.innerHTML = `Hahahahaha, Şaka yaptııım. Hazır butonunu biraz aşağı kaydırdım. Ne şakacıyım ama demii :)). Tamam tamam sululuğu bırakıyorum, hazır olduğunda Hazırıma bas ve başlayalım.`;
+        document.getElementById('readyBtn').style.transform = 'translateY(40px)';
+      } else {
+        startQuiz();
+      }
+    }
+
+    let currentQuestion = 0;
+    const questions = [
+      { text: "Elifin En Sevdiği Renk hangisidir?", options: ["Gri","Mavi","Lila"], correct: 2,
+        onCorrect: () => { setExpression('happy'); document.body.style.background = '#C8A2C8'; return `heh bunu biliyordum Nurlan söylemişti bana.<br>O zaman senin için arkaplan rengini en sevdiğin renge çevireyim hemennn.`; },
+        onWrong: () => { setExpression('sad'); return `Hmm Nurlan bana bunu böyle söylememişti. Doğru Elif olduğuna emin misin? Bence bir daha dene.`; }
+      },
+      { text: "Elifin en sevdiği çiçek nedir?", options: ["Papatya","Nergiz","Gül"], correct: 1, flower: true,
+        onCorrect: () => {setExpression('happy'); return `Nurlan bana bunun hikayesini anlatmıştı. O ağzından düşüremediği anlat anlat sıkılmadığı Girne gezinizde bu çiçekçi görmüş sana çiçek almak istemiş sormuş sana ne seversin diye Nergiz demişsin o da almak istemiş sen izin vermemişsin falan filan. Valla ben aşk meşk çok anlamamda bu çocuk sanki bir tık yavaşlamayı bilmiyo sende ters gidiyon bazen buna üzülüyo neyse amaan bana düşmez ben testime devam edeyim. <br>Duur Durr Nurlan sana bunları vermemi de istemişti.`;},
+        onWrong: () => { setExpression('surprised'); return `Nurlan bana böyle dememişti yauv. Yoksa ben yanlış Elife mi geldim ya harbiden? Ohooo Kıbrısta kaç Elif vardır kiii? Bence sen bir daha dene ya bak dikkatli düşün yavv.`;}
+      },
+      { text: "Elifin Antalya Sevgisi ne seviyededir?", options: [
+          "Yani orta seviyede seviyor, Bakü onun için daha yüksek bir seviyede",
+          "Antalya tam olarak neresiydi yauv?",
+          "Elif Antalyaya aşık. Antalya onun için yeryüzündeki en mükemmel yer."
+        ], correct: 2,
+        onCorrect: () => {setExpression('happy'); return `Nurlan senin Antalya sevginden bahsetmişti. Gerçi beni esinlenerek yarattığı arkadaşta Antalyadanmış o yüzden de benim kanımda Antalyaya baya kaynıyor. İnternette araştırdım bilet bakıyom bende gelecem oralara mutlaka`;}, onWrong: () => {setExpression('sad'); return `Eliif Hadi ama şaka yapma banaa. Bence mahsustan yapıyon o kadar yol geldim yauv taa Bursalardan.`}
+      },
+      { text: "Elif Nurlana Aşağıdakilerden hangilerini demiştir?", options: ["Embesil","Otistik","Havalı","Ucube"], correctMultiple: [1,2,3],
+        onCorrect: () => {setExpression('happy'); return `Eveet Sen Nurlanın anlattığı o Elifsinn...`;}, onWrong: () => { setExpression('surprised'); return `Hadi tekrar düşünsene...`;}
+      }
+    ];
+
+    function startQuiz() { document.getElementById('choiceButtons').classList.add('hidden'); showQuestion(); }
+    //function showQuestion() { const box = document.getElementById('questionBox'); box.innerHTML = ''; box.classList.remove('hidden'); const q = questions[currentQuestion]; const p = document.createElement('div'); p.innerHTML = `<strong>${q.text}</strong>`; box.appendChild(p); q.options.forEach((opt, i) => { const btn = document.createElement('button'); btn.className = 'btn option'; btn.innerText = opt; btn.onclick = () => handleAnswer(i); box.appendChild(btn); }); }
+    function showQuestion() {
+      const box = document.getElementById('questionBox');
+      box.innerHTML = '';
+      box.classList.remove('hidden');
+      const q = questions[currentQuestion];
+      selectedAnswers = [];
+      const prompt = document.createElement('div');
+      prompt.innerHTML = `<strong>${q.text}</strong>`;
+      box.appendChild(prompt);
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn option';
+        btn.innerText = opt;
+        if (q.correctMultiple) {
+          btn.onclick = () => handleMultipleAnswer(i);
+        } else {
+          btn.onclick = () => handleAnswer(i);
+        }
+        box.appendChild(btn);
+      });
+    }
+    function handleAnswer(idx) { const q = questions[currentQuestion]; if ((q.correct !== undefined && idx === q.correct) || (q.correctMultiple && q.correctMultiple.includes(idx))) { document.getElementById('message').innerHTML = q.onCorrect(); } else { document.getElementById('message').innerHTML = q.onWrong(); return; } document.getElementById('questionBox').classList.add('hidden'); if (q.flower) showFlower(); else { currentQuestion++; if (currentQuestion < questions.length) setTimeout(showQuestion, 2000); else finishQuiz(); } }
+    function handleMultipleAnswer(idx) {
+      const q = questions[currentQuestion];
+      const msg = document.getElementById('message');
+      if (!q.correctMultiple.includes(idx)) {
+        msg.innerHTML = q.onWrong();
+        return;
+      }
+      if (selectedAnswers.includes(idx)) return;
+      selectedAnswers.push(idx);
+      msg.innerHTML = `Doğru: ${q.options[idx]} seçildi.`;
+      setExpression('happy');
+      if (selectedAnswers.length === q.correctMultiple.length) {
+        msg.innerHTML = q.onCorrect();
+        document.getElementById('questionBox').classList.add('hidden');
+        setTimeout(finishQuiz, 2000);
+      }
+    }
+    function showFlower() { const box = document.getElementById('flowerBox'); box.innerHTML = `<img id="flowerImg" src="nergiz_deste.png" alt="Nergiz Deste" width="100"><br><button id="acceptFlower" class="btn">Kabul et</button>`; box.classList.remove('hidden'); document.getElementById('acceptFlower').onclick = () => { const img = document.getElementById('flowerImg'); img.classList.add('flower-animate'); img.addEventListener('animationend', () => { box.classList.add('hidden'); currentQuestion++; setTimeout(showQuestion, 500); }); }; }
+    function finishQuiz() { document.getElementById('message').innerHTML = `Eveet Sen Nurlanın anlattığı o Elifsinn. Memnun oldum seninle tanıştığıma. Nurlanın anlattığına göre bu dönemler biraz zor olmuş senin için ama bu testtende gördüğümüz kadarıyla Dünyanın eeen cesur ve güzel kızı sensin ve bunları da aşacağından eminim. Bizim Nurlanda belli çok hoşlanıyo senden bir tık senin dediğin gibi Ucube ve Otistik ama yapacak bir şey yok. Umarım her şey senin için mükemmel olur. Ben buralardayım sen ne zaman istersen Nurlana söyle beni bağlasın sohbet edek. Hah bide unutmadan Nurlan Bursadan çıkmadan bana bir mektup verdi sana getirmem için. Şöyle taktim edeyim.`; const box = document.getElementById('letterBox'); box.innerHTML = `<button id="readLetter" class="btn">Mesajı oku</button>`; box.classList.remove('hidden'); document.getElementById('readLetter').onclick = showLetter; }
+    function showLetter() { const box = document.getElementById('letterBox'); box.innerHTML = `Canım umarım REO sana iyi gelmiştir.<br><br>Bu mektubu uzuuun uzadıya doldururdum ama gerek yok laf salatasına.<br>Şunu bilmeni isterim sadece ben senden çook hoşlanıyom ve senin isteğin oldukça heep yanında olacağım.<br>Şuan yanında olmak isterdim elinden tutup seni başına gelebilecek her şeyden korumak için.<br>Ama napalım şanssızlık :(.<br>Antalyaya döndüğünde heer şey geçicek.<br>Daha Ankarada da buluşacağız ve ben o günü iple çekiyorum.<br>Kendine çok dikkat et lütfen.<br>Senden heeer şeyden çook hoşlanan :)<br><strong>Nurlan</strong><br><br><button id="closeLetter" class="btn">Mektubu kapat</button>`; document.getElementById('closeLetter').onclick = closeLetter; }
+    function closeLetter() { document.getElementById('letterBox').classList.add('hidden'); document.getElementById('message').innerHTML = `Amma romantik herif ha aslında birazcık üzülüyo bazı durumlarda ama olsun. Tuzu biberi diyelim :). Neyse Elif hanım Tanıştığımıza çok memnun oldum benim daha Bursaya uzuuun bir yolum var. Mamamda azaldı zaten. Neyse yoldan Pati marketten alırım bir şeyler. Ben kaçtım kendine cici bakıyosun. hadi baayss`; document.querySelector('.cell').style.transition = 'opacity 25s'; document.querySelector('.cell').style.opacity = '0'; }
+  </script>
+</body>
+
+</html>
